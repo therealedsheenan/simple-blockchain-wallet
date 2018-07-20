@@ -8,7 +8,12 @@ import registerServiceWorker from "./registerServiceWorker";
 
 import App from "./App";
 import store, { history } from "./store";
-import "./index.css";
+
+// styles
+import "./styles/index.css";
+import "./styles/App.css";
+import "./styles/Login.css";
+import "./styles/Navigation.css";
 
 ReactDOM.render(
   <Provider store={store}>

@@ -1,19 +1,14 @@
-import React, { Component } from "react";
-import "./App.css";
-import { Button, Layout } from "zent";
+import React from "react";
+import { Route } from "react-router-dom";
 
-const { Row, Col } = Layout;
+import Home from "./pages/Home";
+import Wallet from "./pages/Wallet";
 
-class App extends Component {
-  render() {
-    return (
-      <main className="App">
-        <Row>
-          <Col span={10}>Col 24</Col>
-        </Row>
-      </main>
-    );
-  }
-}
+const App = () => (
+  <main className="App">
+    <Route exact path="/" component={Home} />
+    <Route exact path="/wallet" component={Wallet} />
+  </main>
+);
 
 export default App;
