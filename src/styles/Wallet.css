@@ -20,3 +20,10 @@
   height: 100%;
   color: #333;
 }
+
+.Wallet-balance__text {
+  font-weight: bold;
+  color: #27f;
+  border: 1px solid;
+  padding: 5px 40px;
+}
