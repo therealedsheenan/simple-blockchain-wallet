@@ -28,7 +28,7 @@ const wallet = (state = walletInitialState, action) => {
         isLoading: false,
         data: {
           ...state.data,
-          ...action.response
+          ...action.response.wallet
         }
       };
     default:

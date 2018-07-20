@@ -26,7 +26,7 @@ const walletList = (state = walletInitialState, action) => {
       return {
         ...state,
         isLoading: false,
-        data: [...state.data, action.response]
+        data: [...state.data, ...action.response.wallets]
       };
 
     default:

@@ -28,9 +28,7 @@ export const requestWalletListAction = () => async dispatch => {
       }
     })
     .then(response => {
-      console.log(response);
       if (response.status === 200) {
-        console.log(response);
         return dispatch(walletList.getWalletListSuccess(response.data));
       }
       return dispatch(walletList.getWalletListFailure("Error fetching data."));

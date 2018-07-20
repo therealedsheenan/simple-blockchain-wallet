@@ -18,18 +18,17 @@ export const wallet = {
   getWalletSuccess: response => createAction(GET_WALLET[SUCCESS], { response })
 };
 
-export const requestWalletAction = () => async dispatch => {
-  dispatch(wallet.getWalletRequest());
+export const requestWalletAction = walletId => async dispatch => {
+  dispatch(wallet.getWalletRequest(walletId));
   await axios
     .post(`${BASE_API_URL}/balance`, {
       data: {
-        address: "2NEywWXCBcPBkDvDu5C3qRhdXdA65EoQkzi"
+        address: walletId
       }
     })
     .then(response => {
-      console.log(response);
       if (response.status === 200) {
-        console.log(response);
+        console.log(response.data)
         return dispatch(wallet.getWalletSuccess(response.data));
       }
       return dispatch(wallet.getWalletFailure("Error fetching data."));
