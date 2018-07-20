@@ -1,10 +1,5 @@
 import { combineReducers } from "redux";
 
-const sampleReducer = (state = {}, action) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
-};
+import wallet from "./modules/wallet/reducer";
 
-export default combineReducers({ sampleReducer });
+export default combineReducers({ wallet });
