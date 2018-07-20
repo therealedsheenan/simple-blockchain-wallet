@@ -6,8 +6,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const PORT = 8000;
-// sample address: 2NEywWXCBcPBkDvDu5C3qRhdXdA65EoQkzi
-const WALLET_ADDRESS = "2NEywWXCBcPBkDvDu5C3qRhdXdA65EoQkzi";
 
 // cors
 app.use(cors());
@@ -59,17 +57,15 @@ app.post(`${API}/balance`, (req, res, next) => {
     next("unable to fetch data.");
   }
 
-  bitgo
-    .wallets()
-    .get({ type: "bitcoin", id: WALLET_ADDRESS }, (err, wallet) => {
-      if (err) {
-        console.log(err);
-        process.exit(-1);
-      }
-      return res.json({
-        balance: wallet.balance()
-      });
+  bitgo.wallets().get({ type: "bitcoin", id: address }, (err, wallet) => {
+    if (err) {
+      console.log(err);
+      process.exit(-1);
+    }
+    return res.json({
+      wallet: wallet.wallet
     });
+  });
 });
 
 // get wallets
@@ -80,7 +76,7 @@ app.post(`${API}/wallet-list`, (req, res, next) => {
       next(error);
     }
     return res.json({
-      balance: wallets
+      wallets: wallets.wallets
     });
   });
 });
