@@ -58,6 +58,7 @@ app.post(`${API}/balance`, (req, res, next) => {
   if (!address) {
     next("unable to fetch data.");
   }
+
   bitgo
     .wallets()
     .get({ type: "bitcoin", id: WALLET_ADDRESS }, (err, wallet) => {
@@ -69,6 +70,19 @@ app.post(`${API}/balance`, (req, res, next) => {
         balance: wallet.balance()
       });
     });
+});
+
+// get wallets
+app.post(`${API}/wallet-list`, (req, res, next) => {
+  bitgo.wallets().list({}, (error, wallets) => {
+    if (error) {
+      console.log(error);
+      next(error);
+    }
+    return res.json({
+      balance: wallets
+    });
+  });
 });
 
 // sending bitcoin
