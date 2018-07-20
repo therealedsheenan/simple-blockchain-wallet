@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Menu } from "zent";
-import { Route, Link, BrowserRouter as Router } from "react-router-dom";
+import { Switch, Route, Link, BrowserRouter as Router } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Navigation from "../components/Navigation";
@@ -13,7 +13,7 @@ import { requestWalletListAction } from "../modules/walletList/actions";
 import History from "./wallet/History";
 import WalletIndex from "./wallet/index";
 
-const { MenuItem } = Menu;
+const { MenuItem, SubMenu } = Menu;
 
 class Wallet extends Component {
   static propTypes = {
@@ -25,22 +25,26 @@ class Wallet extends Component {
     this.props.getWalletListRequest();
   }
   render() {
-    const { match } = this.props;
+    const { match, walletList } = this.props;
     return (
       <Router>
         <div className="Wallet">
           <Navigation />
           <div className="Wallet-wrapper">
-            <Menu className="Wallet-menu" onClick={() => console.log("test")}>
-              <MenuItem key="wallet">
-                <Link
-                  className="Wallet-menu__link"
-                  to={`${match.url}`}
-                  href={`${match.url}`}
-                >
-                  Wallet
-                </Link>
-              </MenuItem>
+            <Menu className="Wallet-menu">
+              <SubMenu className="test" title="Wallets" overlayClassName="sub">
+                {walletList.map(wallet => (
+                  <MenuItem key={wallet.id}>
+                    <Link
+                      className="Wallet-menu__link"
+                      to={`${match.url}/${wallet.id}`}
+                      href={`${match.url}/${wallet.id}`}
+                    >
+                      {wallet.label}
+                    </Link>
+                  </MenuItem>
+                ))}
+              </SubMenu>
               <MenuItem key="history">
                 <Link
                   className="Wallet-menu__link"
@@ -52,7 +56,12 @@ class Wallet extends Component {
               </MenuItem>
             </Menu>
             <div className="Wallet-content">
-              <Route exact path={match.url} component={WalletIndex} />
+              <Route
+                path={`${match.url}/:id`}
+                render={props => (
+                  <WalletIndex key={props.match.params.id} {...props} />
+                )}
+              />
               <Route exact path={`${match.url}/history`} component={History} />
             </div>
           </div>

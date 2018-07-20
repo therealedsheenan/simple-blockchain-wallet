@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Form, Button, Layout } from "zent";
+import { Card, Form, Button, Layout, Tag } from "zent";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -45,26 +45,44 @@ class SendForm extends Component {
   }
 }
 
-const SendBitcoinForm = createForm()(SendForm
-);
+const SendBitcoinForm = createForm()(SendForm);
 
 class index extends Component {
   static propTypes = {
-    getWalletRequest: PropTypes.func.isRequired
+    getWalletRequest: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired // eslint-disable-line
   };
-  componentWillMount() {
-    this.props.getWalletRequest();
+
+  componentDidMount() {
+    const { wallet, match } = this.props;
+    if (match.params) {
+      this.props.getWalletRequest(match.params.id);
+    }
   }
+
   render() {
-    const { wallet } = this.props;
+    const { wallet, match } = this.props;
     return (
       <div>
         <Row>
           <Col span={8}>
-            <Card title="Wallet Balance">
-              <p>
+            <Card title={<div>Wallet Name: {wallet.label} {wallet.isActive ? (<Tag color="green">Active</Tag>): (<Tag color="red">Inactive</Tag>)}</div>}>
+
+              <label className="Wallet-balance__label">
                 Balance: <span className="Wallet-balance__text"> {wallet.balance}</span>
-              </p>
+              </label>
+              <label className="Wallet-balance__label">
+                Sent: <span className="Wallet-balance__text"> {wallet.sent}</span>
+              </label>
+              <label className="Wallet-balance__label">
+                Received: <span className="Wallet-balance__text"> {wallet.received}</span>
+              </label>
+              <label className="Wallet-balance__label">
+                Unconfirmed sends: <span className="Wallet-balance__text"> {wallet.unconfirmedSends}</span>
+              </label>
+              <label className="Wallet-balance__label">
+                Unconfirmed receives: <span className="Wallet-balance__text"> {wallet.unconfirmedReceives}</span>
+              </label>
             </Card>
           </Col>
         </Row>
@@ -85,6 +103,6 @@ export default connect(
     wallet: wallet.data
   }),
   dispatch => ({
-    getWalletRequest: () => dispatch(requestWalletAction())
+    getWalletRequest: (walletId) => dispatch(requestWalletAction(walletId))
   })
 )(index)
