@@ -3,9 +3,14 @@ const express = require("express");
 const app = express();
 const BitGoJS = require("bitgo");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
+const PORT = 8000;
 // sample address: 2NEywWXCBcPBkDvDu5C3qRhdXdA65EoQkzi
 const WALLET_ADDRESS = "2NEywWXCBcPBkDvDu5C3qRhdXdA65EoQkzi";
+
+// cors
+app.use(cors());
 
 // body parser
 app.use(bodyParser.json());
@@ -46,8 +51,10 @@ app.post(`${API}/create`, (req, res, next) => {
 });
 
 // get wallet balance
-app.get(`${API}/balance`, (req, res, next) => {
-  const { address } = req.body;
+app.post(`${API}/balance`, (req, res, next) => {
+  const {
+    data: { address }
+  } = req.body;
   if (!address) {
     next("unable to fetch data.");
   }
@@ -100,4 +107,4 @@ app.post(`${API}/send`, (req, res, next) => {
   });
 });
 
-app.listen(3001, () => console.log("Server listening on port 3001!"));
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`));
