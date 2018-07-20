@@ -21,7 +21,7 @@ export const wallet = {
 export const requestWalletAction = walletId => async dispatch => {
   dispatch(wallet.getWalletRequest(walletId));
   await axios
-    .post(`${BASE_API_URL}/balance`, {
+    .post(`${BASE_API_URL}/wallet-info`, {
       data: {
         address: walletId
       }

@@ -48,8 +48,8 @@ app.post(`${API}/create`, (req, res, next) => {
     });
 });
 
-// get wallet balance
-app.post(`${API}/balance`, (req, res, next) => {
+// get wallet info
+app.post(`${API}/wallet-info`, (req, res, next) => {
   const {
     data: { address }
   } = req.body;
@@ -68,7 +68,7 @@ app.post(`${API}/balance`, (req, res, next) => {
   });
 });
 
-// get wallets
+// get wallet-list
 app.post(`${API}/wallet-list`, (req, res, next) => {
   bitgo.wallets().list({}, (error, wallets) => {
     if (error) {
