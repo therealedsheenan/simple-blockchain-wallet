@@ -1,6 +1,6 @@
 import { REQUEST, FAILURE, SUCCESS } from "../utils";
 
-import { GET_WALLET } from "./actions";
+import { GET_WALLET_LIST } from "./actions";
 
 export const walletInitialState = {
   data: [],
@@ -8,27 +8,30 @@ export const walletInitialState = {
   isLoading: false
 };
 
-const wallet = (state = walletInitialState, action) => {
+const walletList = (state = walletInitialState, action) => {
   const { type } = action;
   switch (type) {
-    case GET_WALLET[REQUEST]:
+    case GET_WALLET_LIST[REQUEST]:
       return {
         ...state,
         isLoading: true
       };
-    case GET_WALLET[FAILURE]:
+    case GET_WALLET_LIST[FAILURE]:
       return {
         ...state,
         isLoading: false,
         error: action.error
       };
-    case GET_WALLET[SUCCESS]:
+    case GET_WALLET_LIST[SUCCESS]:
       return {
         ...state,
         isLoading: false,
         data: [...state.data, action.response]
       };
+
+    default:
+      return state;
   }
 };
 
-export default wallet;
+export default walletList;
