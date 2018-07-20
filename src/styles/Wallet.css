@@ -12,6 +12,8 @@
   margin-left: 180px;
   padding: 16px;
   box-sizing: border-box;
+  position: relative;
+  z-index: -1;
 }
 
 .Wallet-menu__link {
@@ -21,9 +23,15 @@
   color: #333;
 }
 
+.Wallet-balance__label {
+  display: block;
+}
+
 .Wallet-balance__text {
   font-weight: bold;
-  color: #27f;
+  color: #333;
+  line-height: 2;
   border: 1px solid;
-  padding: 5px 40px;
+  padding: 0 10px;
 }
+
