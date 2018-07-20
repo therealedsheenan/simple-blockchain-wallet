@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 import { Card, Form, Button, Layout } from "zent";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+// actions
+import { requestWalletAction } from "../../modules/wallet/actions";
 
 const { FormInputField, createForm } = Form;
 const { Row, Col } = Layout;
@@ -40,17 +45,25 @@ class SendForm extends Component {
   }
 }
 
-const SendBitcoinForm = createForm()(SendForm);
+const SendBitcoinForm = createForm()(SendForm
+);
 
 class index extends Component {
+  static propTypes = {
+    getWalletRequest: PropTypes.func.isRequired
+  };
+  componentWillMount() {
+    this.props.getWalletRequest();
+  }
   render() {
+    const { wallet } = this.props;
     return (
       <div>
         <Row>
           <Col span={8}>
             <Card title="Wallet Balance">
               <p>
-                Balance: <span> 100</span>
+                Balance: <span> {wallet.balance}</span>
               </p>
             </Card>
           </Col>
@@ -67,4 +80,11 @@ class index extends Component {
   }
 }
 
-export default index;
+export default connect(
+  ({ wallet }) => ({
+    wallet: wallet.data
+  }),
+  dispatch => ({
+    getWalletRequest: () => dispatch(requestWalletAction())
+  })
+)(index)

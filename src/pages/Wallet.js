@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Menu } from "zent";
 import { Route, Link, BrowserRouter as Router } from "react-router-dom";
+import { connect } from "react-redux";
 
 import Navigation from "../components/Navigation";
 
@@ -12,6 +13,9 @@ import WalletIndex from "./wallet/index";
 const { MenuItem } = Menu;
 
 class Wallet extends Component {
+  static propTypes = {
+    match: PropTypes.object.isRequired // eslint-disable-line
+  };
   render() {
     const { match } = this.props;
     return (
@@ -21,12 +25,20 @@ class Wallet extends Component {
           <div className="Wallet-wrapper">
             <Menu className="Wallet-menu" onClick={() => console.log("test")}>
               <MenuItem key="wallet">
-                <Link className="Wallet-menu__link" to={`${match.url}`}>
+                <Link
+                  className="Wallet-menu__link"
+                  to={`${match.url}`}
+                  href={`${match.url}`}
+                >
                   Wallet
                 </Link>
               </MenuItem>
               <MenuItem key="history">
-                <Link className="Wallet-menu__link" to={`${match.url}/history`}>
+                <Link
+                  className="Wallet-menu__link"
+                  to={`${match.url}/history`}
+                  href={`${match.url}/history`}
+                >
                   Transaction History
                 </Link>
               </MenuItem>
