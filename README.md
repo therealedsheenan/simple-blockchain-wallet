@@ -7,7 +7,8 @@ Before you install this project, make sure to create your own account at [BITGO]
 
 ```
 $ npm install
-$ ACCESS_TOKEN=YOUR_ACCESS_TOKEN node server.js
+$ npm run server // run node server
+$ npm start // run react client
 ```
 
 ### References
