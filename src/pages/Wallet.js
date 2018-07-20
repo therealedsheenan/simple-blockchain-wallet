@@ -6,6 +6,9 @@ import { connect } from "react-redux";
 
 import Navigation from "../components/Navigation";
 
+// actions
+import { requestWalletListAction } from "../modules/walletList/actions";
+
 // wallet sub pages
 import History from "./wallet/History";
 import WalletIndex from "./wallet/index";
@@ -14,8 +17,13 @@ const { MenuItem } = Menu;
 
 class Wallet extends Component {
   static propTypes = {
-    match: PropTypes.object.isRequired // eslint-disable-line
+    match: PropTypes.object.isRequired, // eslint-disable-line,
+    getWalletListRequest: PropTypes.func.isRequired
   };
+
+  componentWillMount() {
+    this.props.getWalletListRequest();
+  }
   render() {
     const { match } = this.props;
     return (
@@ -54,4 +62,9 @@ class Wallet extends Component {
   }
 }
 
-export default Wallet;
+export default connect(
+  ({ walletList }) => ({ walletList: walletList.data }),
+  dispatch => ({
+    getWalletListRequest: () => dispatch(requestWalletListAction())
+  })
+)(Wallet);

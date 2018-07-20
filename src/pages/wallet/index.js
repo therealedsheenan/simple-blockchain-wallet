@@ -63,7 +63,7 @@ class index extends Component {
           <Col span={8}>
             <Card title="Wallet Balance">
               <p>
-                Balance: <span> {wallet.balance}</span>
+                Balance: <span className="Wallet-balance__text"> {wallet.balance}</span>
               </p>
             </Card>
           </Col>
