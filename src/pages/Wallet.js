@@ -31,8 +31,8 @@ class Wallet extends Component {
         <div className="Wallet">
           <Navigation />
           <div className="Wallet-wrapper">
-            <Menu className="Wallet-menu">
-              <SubMenu className="test" title="Wallets" overlayClassName="sub">
+            <Menu mode="inline" className="Wallet-menu">
+              <SubMenu title="Wallets">
                 {walletList.map(wallet => (
                   <MenuItem key={wallet.id}>
                     <Link
