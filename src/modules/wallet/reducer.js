@@ -1,6 +1,6 @@
 import { REQUEST, FAILURE, SUCCESS } from "../utils";
 
-import { GET_WALLET } from "./actions";
+import { GET_WALLET, POST_SEND_BITCOIN } from "./actions";
 
 export const walletInitialState = {
   data: {},
@@ -30,6 +30,22 @@ const wallet = (state = walletInitialState, action) => {
           ...state.data,
           ...action.response.wallet
         }
+      };
+    case POST_SEND_BITCOIN[REQUEST]:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case POST_SEND_BITCOIN[FAILURE]:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.error
+      };
+    case POST_SEND_BITCOIN[SUCCESS]:
+      return {
+        ...state,
+        isLoading: false
       };
     default:
       return state;
