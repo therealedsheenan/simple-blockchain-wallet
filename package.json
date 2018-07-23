@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "bitgo": "^4.31.2",
+    "bitgo": "^4.32.0",
     "body-parser": "^1.18.3",
     "connected-react-router": "^4.3.0",
     "cors": "^2.8.4",
@@ -26,6 +26,10 @@
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
+    "ripple-address-codec": "^2.0.1",
+    "ripple-binary-codec": "^0.1.13",
+    "ripple-hashes": "^0.3.1",
+    "ripple-keypairs": "^0.10.1",
     "safe-buffer": "^5.1.2",
     "zent": "^6.0.1"
   },
