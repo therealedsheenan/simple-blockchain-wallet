@@ -16,7 +16,8 @@ app.use(bodyParser.json());
 const API = "/api/v1";
 
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN || "";
-const bitgo = new BitGoJS.BitGo({ env: "test", accessToken: ACCESS_TOKEN });
+// const bitgo = new BitGoJS.BitGo({ env: "test", accessToken: ACCESS_TOKEN });
+const bitgo = new BitGoJS.BitGo();
 
 app.get(`${API}/`, (req, res) => res.send("Server is alive!"));
 
@@ -75,6 +76,9 @@ app.post(`${API}/wallet-list`, (req, res, next) => {
       console.log(error);
       next(error);
     }
+
+    console.log(wallets);
+
     return res.json({
       wallets: wallets.wallets
     });
@@ -87,33 +91,77 @@ app.post(`${API}/send`, (req, res, next) => {
   if (!walletId || !walletPass || !destination || !amount) {
     next("unable to send bitcoin.");
   }
-  bitgo.wallets().get({ id: walletId }, (err, wallet) => {
-    if (err) {
-      console.log(err);
-      next(err);
-    }
 
-    const walletBalance = (wallet.balance() / 1e8).toFixed(4);
-
-    wallet.sendCoins(
-      {
-        address: destination,
-        amount,
-        walletPassphrase: walletPass,
-        minConfirms: 0
-      },
-      (err, result) => {
+  bitgo
+    .unlock({ otp: "0000000" })
+    .then(unlockResponse => {
+      bitgo.wallets().get({ id: walletId }, (err, wallet) => {
         if (err) {
           console.log(err);
           next(err);
         }
 
-        return res.json({
-          ...result,
-          balance: walletBalance
-        });
-      }
-    );
+        const walletBalance = (wallet.balance() / 1e8).toFixed(4);
+
+        wallet.sendCoins(
+          {
+            address: destination,
+            amount,
+            walletPassphrase: walletPass, // sender pass phrase
+            minConfirms: 0
+          },
+          (err, result) => {
+            if (err) {
+              console.log(err);
+              next(err);
+            }
+
+            return res.json({
+              ...result,
+              balance: walletBalance
+            });
+          }
+        );
+      });
+    })
+    .catch(error => next(error));
+});
+
+// login
+app.post(`${API}/login`, (req, res, next) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    next("unable to login.");
+  }
+  bitgo
+    .authenticate({
+      username: username,
+      password: password,
+      otp: "0000000"
+    })
+    .then(response => {
+      var token = response.token;
+      var user = response.user;
+      // etc
+      return res.json({
+        response
+      });
+    })
+    .catch(err => next(err));
+});
+
+app.post(`${API}/logout`, (req, res, next) => {
+  bitgo.logout({}).then(function(res) {
+    // the user is now logged out
+    console.log(res);
+  });
+});
+
+app.post(`${API}/unlock`, (req, res, next) => {
+  bitgo.unlock({ otp: "0000000" }).then(unlockResponse => {
+    return res.json({
+      response: unlockResponse
+    });
   });
 });
 
