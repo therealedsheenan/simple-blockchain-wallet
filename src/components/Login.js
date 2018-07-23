@@ -1,6 +1,7 @@
 import { Form, Radio, Notify, Button, Layout } from "zent";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Bitgo from "bitgo";
 
 const { Field, FormInputField, createForm } = Form;
 const { Row, Col } = Layout;
@@ -13,6 +14,7 @@ class Login extends Component {
   submit = (values, zentForm) => {
     Notify.success(JSON.stringify(values));
     console.log(`Submitted${values}`);
+    // Bitgo
   };
 
   render() {

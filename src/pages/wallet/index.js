@@ -14,6 +14,15 @@ class SendForm extends Component {
     return (
       <Form horizontal onSubmit={() => console.log("submit")}>
         <FormInputField
+          name="passphrase"
+          type="password"
+          label="Wallet passphrase: "
+          required
+          spellCheck={false}
+          validations={{ required: true }}
+          validationErrors={{ required: "Please enter the value" }}
+        />
+        <FormInputField
           name="address"
           type="text"
           label="Wallet Address:"
@@ -32,6 +41,7 @@ class SendForm extends Component {
           validations={{ required: true }}
           validationErrors={{ required: "Please enter the value" }}
         />
+
         <div className="zent-form__form-actions">
           <Button type="primary" htmlType="submit">
             Send
@@ -66,24 +76,47 @@ class index extends Component {
       <div>
         <Row>
           <Col span={8}>
-            <Card title={<div>Wallet Name: {wallet.label} {wallet.isActive ? (<Tag color="green">Active</Tag>): (<Tag color="red">Inactive</Tag>)}</div>}>
+            <Card
+              title={
+                <div>
+                  Wallet Name: {wallet.label}{" "}
+                  {wallet.isActive ? (
+                    <Tag color="green">Active</Tag>
+                  ) : (
+                    <Tag color="red">Inactive</Tag>
+                  )}
+                </div>
+              }
+            >
               <label className="Wallet-balance__label">
-                Wallet ID: <span className="Wallet-balance__text"> {wallet.id}</span>
+                Wallet ID:{" "}
+                <span className="Wallet-balance__text"> {wallet.id}</span>
               </label>
               <label className="Wallet-balance__label">
-                Balance: <span className="Wallet-balance__text"> {wallet.balance}</span>
+                Balance:{" "}
+                <span className="Wallet-balance__text"> {wallet.balance}</span>
               </label>
               <label className="Wallet-balance__label">
-                Sent: <span className="Wallet-balance__text"> {wallet.sent}</span>
+                Sent:{" "}
+                <span className="Wallet-balance__text"> {wallet.sent}</span>
               </label>
               <label className="Wallet-balance__label">
-                Received: <span className="Wallet-balance__text"> {wallet.received}</span>
+                Received:{" "}
+                <span className="Wallet-balance__text"> {wallet.received}</span>
               </label>
               <label className="Wallet-balance__label">
-                Unconfirmed sends: <span className="Wallet-balance__text"> {wallet.unconfirmedSends}</span>
+                Unconfirmed sends:{" "}
+                <span className="Wallet-balance__text">
+                  {" "}
+                  {wallet.unconfirmedSends}
+                </span>
               </label>
               <label className="Wallet-balance__label">
-                Unconfirmed receives: <span className="Wallet-balance__text"> {wallet.unconfirmedReceives}</span>
+                Unconfirmed receives:{" "}
+                <span className="Wallet-balance__text">
+                  {" "}
+                  {wallet.unconfirmedReceives}
+                </span>
               </label>
             </Card>
           </Col>
@@ -105,6 +138,6 @@ export default connect(
     wallet: wallet.data
   }),
   dispatch => ({
-    getWalletRequest: (walletId) => dispatch(requestWalletAction(walletId))
+    getWalletRequest: walletId => dispatch(requestWalletAction(walletId))
   })
-)(index)
+)(index);

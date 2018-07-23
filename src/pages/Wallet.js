@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Menu } from "zent";
-import { Switch, Route, Link, BrowserRouter as Router } from "react-router-dom";
+import { Route, Link, BrowserRouter as Router } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Navigation from "../components/Navigation";

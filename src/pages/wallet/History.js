@@ -1,9 +1,5 @@
-import React, { Component } from "react";
+import React from 'react';
 
-class History extends Component {
-  render() {
-    return <div>Transactions History</div>;
-  }
-}
+const History = () => <div>Transactions History</div>;
 
 export default History;
