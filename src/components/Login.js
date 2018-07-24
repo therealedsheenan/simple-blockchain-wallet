@@ -1,20 +1,25 @@
 import { Form, Radio, Notify, Button, Layout } from "zent";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Bitgo from "bitgo";
+import { connect } from "react-redux";
+import { postAuthRequest } from "../modules/auth/actions";
 
 const { Field, FormInputField, createForm } = Form;
 const { Row, Col } = Layout;
 
 class Login extends Component {
   static propTypes = {
-    handleSubmit: PropTypes.func.isRequired
+    handleSubmit: PropTypes.func.isRequired,
+    postAuthRequest: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
   };
 
   submit = (values, zentForm) => {
-    Notify.success(JSON.stringify(values));
-    console.log(`Submitted${values}`);
-    // Bitgo
+    // Notify.success(JSON.stringify(values));
+    // console.log(values);
+    // console.log(zentForm);
+    const { username, password } = values;
+    this.props.postAuthRequest(username, password);
   };
 
   render() {
@@ -29,13 +34,19 @@ class Login extends Component {
                 name="username"
                 type="text"
                 label="Username:"
-                value=""
+                required
+                validations={{
+                  required: true
+                }}
               />
               <FormInputField
                 name="password"
                 type="password"
                 label="Password:"
-                value=""
+                required
+                validations={{
+                  required: true
+                }}
               />
               <div className="zent-form__form-actions">
                 <Button type="primary" htmlType="submit">
@@ -49,4 +60,10 @@ class Login extends Component {
     );
   }
 }
-export default createForm()(Login);
+export default connect(
+  auth => ({ auth }),
+  dispatch => ({
+    postAuthRequest: (username, password) =>
+      dispatch(postAuthRequest(username, password))
+  })
+)(createForm()(Login));
