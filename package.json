@@ -12,7 +12,6 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bitgo": "^4.32.0",
-    "body-parser": "^1.18.3",
     "connected-react-router": "^4.3.0",
     "cors": "^2.8.4",
     "express": "^4.16.3",
@@ -35,8 +34,10 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",
+    "body-parser": "^1.18.3",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "errorhandler": "^1.5.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
