@@ -4,8 +4,13 @@ const app = express();
 const BitGoJS = require("bitgo");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const errorhandler = require("errorhandler");
 
 const PORT = 8000;
+const isProduction = process.env.NODE_ENV === "production";
+const API = "/api/v1";
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN || "";
+const bitgo = new BitGoJS.BitGo();
 
 // cors
 app.use(cors());
@@ -13,11 +18,10 @@ app.use(cors());
 // body parser
 app.use(bodyParser.json());
 
-const API = "/api/v1";
-
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN || "";
-// const bitgo = new BitGoJS.BitGo({ env: "test", accessToken: ACCESS_TOKEN });
-const bitgo = new BitGoJS.BitGo();
+// development error handler
+if (!isProduction) {
+  app.use(errorhandler());
+}
 
 app.get(`${API}/`, (req, res) => res.send("Server is alive!"));
 
@@ -162,6 +166,35 @@ app.post(`${API}/unlock`, (req, res, next) => {
     return res.json({
       response: unlockResponse
     });
+  });
+});
+
+// development error handler
+// will print stacktrace
+if (!isProduction) {
+  app.use((err, req, res, next) => {
+    console.log(err.stack);
+
+    res.status(err.status || 500);
+
+    res.json({
+      errors: {
+        message: err.message,
+        error: err
+      }
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    errors: {
+      message: err.message,
+      error: {}
+    }
   });
 });
 
