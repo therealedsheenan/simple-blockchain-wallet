@@ -23,8 +23,7 @@
       "react/sort-comp": "off",
       "react/jsx-no-bind": "off",
       "indent": [
-          "error",
-          2
+          2, 2, {"SwitchCase": 1}
       ],
       "linebreak-style": [
           "error",
