@@ -4,8 +4,7 @@ import { GET_WALLET_LIST, GET_WALLET } from "./actions";
 
 export const walletInitialState = {
   data: {},
-  error: null,
-  isLoading: false
+  error: null
 };
 
 const walletList = (state = walletInitialState, action) => {
@@ -13,11 +12,10 @@ const walletList = (state = walletInitialState, action) => {
   switch (type) {
     case GET_WALLET[REQUEST]:
       const { walletId } = action;
-      const loadingWallet = { ...state.data[walletId], loading: true };
+      const loadingWallet = { ...state.data[walletId] };
 
       return {
         ...state,
-        isLoading: true,
         data: { ...state.data, [walletId]: loadingWallet }
       };
     case GET_WALLET[SUCCESS]:
@@ -25,25 +23,21 @@ const walletList = (state = walletInitialState, action) => {
       const oldWallet = state.data[action.walletId] || {};
       const loadedWallet = {
         ...oldWallet,
-        ...response.wallet,
-        loading: false
+        ...response.wallet
       };
       const newWallet = { ...state.data, [action.walletId]: loadedWallet };
 
       return {
         ...state,
-        isLoading: true,
         data: newWallet
       };
     case GET_WALLET_LIST[REQUEST]:
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     case GET_WALLET_LIST[FAILURE]:
       return {
         ...state,
-        isLoading: false,
         error: action.error
       };
     case GET_WALLET_LIST[SUCCESS]:
@@ -56,7 +50,6 @@ const walletList = (state = walletInitialState, action) => {
       );
       return {
         ...state,
-        isLoading: false,
         data: {
           ...state.data,
           ...walletsList

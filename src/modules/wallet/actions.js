@@ -12,7 +12,7 @@ export const GET_WALLET = createRequestTypes("GET_WALLET");
 
 const BASE_API_URL = "http://localhost:8000/api/v1";
 
-export const walletList = {
+export const wallet = {
   // individual wallet
   getWalletRequest: walletId => createAction(GET_WALLET[REQUEST], { walletId }),
   getWalletFailure: error => createAction(GET_WALLET[FAILURE], { error }),
@@ -28,20 +28,20 @@ export const walletList = {
 };
 
 export const requestWalletListAction = () => async dispatch => {
-  dispatch(walletList.getWalletListRequest());
+  dispatch(wallet.getWalletListRequest());
   await axios
     .post(`${BASE_API_URL}/wallet-list`)
     .then(response => {
       if (response.status === 200) {
-        return dispatch(walletList.getWalletListSuccess(response.data));
+        return dispatch(wallet.getWalletListSuccess(response.data));
       }
-      return dispatch(walletList.getWalletListFailure("Error fetching data."));
+      return dispatch(wallet.getWalletListFailure("Error fetching data."));
     })
-    .catch(error => dispatch(walletList.getWalletListFailure(error)));
+    .catch(error => dispatch(wallet.getWalletListFailure(error)));
 };
 
 export const requestWalletAction = walletId => async dispatch => {
-  dispatch(walletList.getWalletRequest(walletId));
+  dispatch(wallet.getWalletRequest(walletId));
   await axios
     .post(`${BASE_API_URL}/wallet-info`, {
       data: {
@@ -50,12 +50,12 @@ export const requestWalletAction = walletId => async dispatch => {
     })
     .then(response => {
       if (response.status === 200) {
-        return dispatch(walletList.getWalletSuccess(walletId, response.data));
+        return dispatch(wallet.getWalletSuccess(walletId, response.data));
       }
-      return dispatch(walletList.getWalletFailure("Error fetching data."));
+      return dispatch(wallet.getWalletFailure("Error fetching data."));
     })
     .catch(error => {
       console.log(error);
-      return dispatch(walletList.getWalletFailure(error));
+      return dispatch(wallet.getWalletFailure(error));
     });
 };
