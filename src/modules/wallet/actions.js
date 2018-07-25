@@ -47,9 +47,7 @@ export const requestWalletAction = walletId => async dispatch => {
       address: walletId
     }
   });
-
-  if (response) {
-    return dispatch(wallet.getWalletSuccess(walletId, response.data));
-  }
-  return dispatch(wallet.getWalletFailure(walletId, "Unable to fetch wallet."));
+  return response
+    ? dispatch(wallet.getWalletSuccess(walletId, response.data))
+    : dispatch(wallet.getWalletFailure(walletId, "Unable to fetch wallet."));
 };

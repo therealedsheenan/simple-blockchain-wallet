@@ -1,4 +1,7 @@
+import { push } from "connected-react-router";
+
 import Api from "../../services/api";
+import { setToken, unsetToken } from "../../utils";
 
 import {
   createRequestTypes,
@@ -9,12 +12,19 @@ import {
 } from "../utils";
 
 export const POST_AUTH = createRequestTypes("POST_AUTH");
+export const POST_UNAUTH = createRequestTypes("POST_UNAUTH");
 
 export const auth = {
+  // auth request
   postAuthRequest: (username, password) =>
     createAction(POST_AUTH[REQUEST], { username, password }),
   postAuthSuccess: response => createAction(POST_AUTH[SUCCESS], { response }),
-  postAuthFailure: error => createAction(POST_AUTH[FAILURE], { error })
+  postAuthFailure: error => createAction(POST_AUTH[FAILURE], { error }),
+
+  // unauth / logout request
+  postUnauthRequest: () => createAction(POST_UNAUTH[REQUEST]),
+  postUnauthFailure: () => createAction(POST_UNAUTH[FAILURE]),
+  postUnauthSuccess: () => createAction(POST_UNAUTH[SUCCESS])
 };
 
 export const postAuthRequest = (username, password) => async dispatch => {
@@ -27,9 +37,28 @@ export const postAuthRequest = (username, password) => async dispatch => {
     url: "/login",
     data: { username, password }
   });
-  console.log(response);
-  console.log(error);
-  return response
-    ? dispatch(auth.postAuthSuccess(response.data))
-    : dispatch(auth.postAuthFailure("Invalid credentials."));
+  if (response) {
+    dispatch(auth.postAuthSuccess(response.data));
+    // set localstorage token
+    setToken(
+      response.data.user.access_token,
+      JSON.stringify(response.data.user.user)
+    );
+    return dispatch(push("/wallet"));
+  }
+  return dispatch(auth.postAuthFailure("Invalid credentials."));
+};
+
+export const postUnauthRequest = () => async dispatch => {
+  dispatch(auth.postUnauthRequest());
+  const { response, error } = await Api({
+    method: "post",
+    url: "logout"
+  });
+  if (response) {
+    unsetToken();
+    dispatch(auth.postUnauthSuccess());
+    return dispatch(push("/"));
+  }
+  return dispatch(auth.postUnauthFailure(error));
 };

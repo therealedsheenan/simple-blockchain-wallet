@@ -1,36 +1,44 @@
 import { REQUEST, FAILURE, SUCCESS } from "../utils";
-import { POST_AUTH } from "./actions";
+import { POST_AUTH, POST_UNAUTH } from "./actions";
 
 export const authInitialState = {
   data: {
     isAuthenticated: false,
     profile: {}
   },
-  error: null,
-  isLoading: false
+  error: null
 };
 
 const auth = (state = authInitialState, action) => {
   switch (action.type) {
+    case POST_UNAUTH[REQUEST]:
     case POST_AUTH[REQUEST]:
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     case POST_AUTH[FAILURE]:
       return {
         ...state,
-        isLoading: false,
         error: action.error
       };
     case POST_AUTH[SUCCESS]:
       return {
         ...state,
-        isLoading: false,
         error: null,
         data: {
           isAuthenticated: !!action.response,
-          profile: action.response
+          profile: {
+            ...state.data.profile,
+            ...action.response.user.user
+          }
+        }
+      };
+    case POST_UNAUTH[SUCCESS]:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          ...authInitialState.data
         }
       };
     default:
