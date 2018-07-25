@@ -12,8 +12,8 @@ const API = "/api/v1";
 // const ACCESS_TOKEN = process.env.ACCESS_TOKEN || "";
 const ACCESS_TOKEN = "";
 const bitgo = new BitGoJS.BitGo({
-  env: "test",
-  accessToken: ACCESS_TOKEN
+  env: "test"
+  // accessToken: ACCESS_TOKEN
 });
 
 // cors
@@ -132,8 +132,7 @@ app.post(`${API}/login`, (req, res, next) => {
   if (!username || !password) {
     return next("unable to login.");
   }
-  console.log(username);
-  console.log(password);
+
   bitgo
     .authenticate({
       username: username,
@@ -145,7 +144,7 @@ app.post(`${API}/login`, (req, res, next) => {
       var user = response.user;
       // etc
       return res.json({
-        response
+        user: response
       });
     })
     .catch(err => next(err));
