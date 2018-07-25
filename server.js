@@ -9,7 +9,8 @@ const errorhandler = require("errorhandler");
 const PORT = 8000;
 const isProduction = process.env.NODE_ENV === "production";
 const API = "/api/v1";
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN || "";
+// const ACCESS_TOKEN = process.env.ACCESS_TOKEN || "";
+const ACCESS_TOKEN = "";
 const bitgo = new BitGoJS.BitGo({
   env: "test",
   accessToken: ACCESS_TOKEN
@@ -40,14 +41,13 @@ app.get(`${API}/auth`, (req, res) =>
 app.post(`${API}/create`, (req, res, next) => {
   const { label, pass } = req.body;
   if (!label || pass) {
-    next("Invalid data");
+    return next("Invalid data");
   }
   bitgo
     .wallets()
     .createWalletWithKeychains({ passphrase: pass, label }, (err, result) => {
       if (err) {
-        console.dir(err);
-        next("Error creating wallet!");
+        return next("Error creating wallet!");
       }
       return res.json({
         walletId: result.wallet.id(),
@@ -58,17 +58,14 @@ app.post(`${API}/create`, (req, res, next) => {
 
 // get wallet info
 app.post(`${API}/wallet-info`, (req, res, next) => {
-  const {
-    data: { address }
-  } = req.body;
+  const { address } = req.body;
   if (!address) {
-    next("unable to fetch data.");
+    return next("unable to fetch data.");
   }
 
   bitgo.wallets().get({ type: "bitcoin", id: address }, (err, wallet) => {
     if (err) {
-      console.log(err);
-      process.exit(-1);
+      return next(err);
     }
     return res.json({
       wallet: wallet.wallet
@@ -80,11 +77,8 @@ app.post(`${API}/wallet-info`, (req, res, next) => {
 app.post(`${API}/wallet-list`, (req, res, next) => {
   bitgo.wallets().list({}, (error, wallets) => {
     if (error) {
-      console.log(error);
-      next(error);
+      return next(error);
     }
-
-    console.log(wallets);
 
     return res.json({
       wallets: wallets.wallets
@@ -96,7 +90,7 @@ app.post(`${API}/wallet-list`, (req, res, next) => {
 app.post(`${API}/send`, (req, res, next) => {
   const { walletId, walletPass, destination, amount } = req.body;
   if (!walletId || !walletPass || !destination || !amount) {
-    next("unable to send bitcoin.");
+    return next("unable to send bitcoin.");
   }
 
   bitgo
@@ -104,8 +98,7 @@ app.post(`${API}/send`, (req, res, next) => {
     .then(unlockResponse => {
       bitgo.wallets().get({ id: walletId }, (err, wallet) => {
         if (err) {
-          console.log(err);
-          next(err);
+          return next(err);
         }
 
         const walletBalance = (wallet.balance() / 1e8).toFixed(4);
@@ -119,8 +112,7 @@ app.post(`${API}/send`, (req, res, next) => {
           },
           (err, result) => {
             if (err) {
-              console.log(err);
-              next(err);
+              return next(err);
             }
 
             return res.json({
@@ -138,8 +130,10 @@ app.post(`${API}/send`, (req, res, next) => {
 app.post(`${API}/login`, (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    next("unable to login.");
+    return next("unable to login.");
   }
+  console.log(username);
+  console.log(password);
   bitgo
     .authenticate({
       username: username,
@@ -158,10 +152,13 @@ app.post(`${API}/login`, (req, res, next) => {
 });
 
 app.post(`${API}/logout`, (req, res, next) => {
-  bitgo.logout({}).then(function(res) {
-    // the user is now logged out
-    console.log(res);
-  });
+  bitgo
+    .logout({})
+    .then(response => {
+      // the user is now logged out
+      return res.status(200).end();
+    })
+    .catch(error => next(error));
 });
 
 app.post(`${API}/unlock`, (req, res, next) => {
@@ -176,9 +173,8 @@ app.post(`${API}/unlock`, (req, res, next) => {
 // will print stacktrace
 if (!isProduction) {
   app.use((err, req, res, next) => {
-    console.log(err.stack);
-
     res.status(err.status || 500);
+    console.log(err);
 
     res.json({
       errors: {
