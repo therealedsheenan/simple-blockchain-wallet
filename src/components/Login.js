@@ -1,5 +1,5 @@
 import { Form, Radio, Notify, Button, Layout } from "zent";
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { postAuthRequest } from "../modules/auth/actions";
@@ -7,7 +7,7 @@ import { postAuthRequest } from "../modules/auth/actions";
 const { Field, FormInputField, createForm } = Form;
 const { Row, Col } = Layout;
 
-class Login extends Component {
+class Login extends PureComponent {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     postAuthRequest: PropTypes.func.isRequired,
@@ -15,15 +15,22 @@ class Login extends Component {
   };
 
   submit = (values, zentForm) => {
-    // Notify.success(JSON.stringify(values));
-    // console.log(values);
-    // console.log(zentForm);
     const { username, password } = values;
     this.props.postAuthRequest(username, password);
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.props.auth.error) {
+      Notify.error(this.props.auth.error);
+    }
+
+    if (this.props.auth.data.isAuthenticated) {
+      Notify.success("Login successful!");
+    }
+  }
+
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, auth } = this.props;
     return (
       <Row>
         <Col span={8} offset={8}>
@@ -61,7 +68,7 @@ class Login extends Component {
   }
 }
 export default connect(
-  auth => ({ auth }),
+  ({ auth }) => ({ auth }),
   dispatch => ({
     postAuthRequest: (username, password) =>
       dispatch(postAuthRequest(username, password))
