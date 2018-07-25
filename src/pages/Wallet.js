@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import Navigation from "../components/Navigation";
 
 // actions
-import { requestWalletListAction } from "../modules/walletList/actions";
+import { requestWalletListAction } from "../modules/wallet/actions";
 
 // wallet sub pages
 import History from "./wallet/History";
@@ -72,7 +72,14 @@ class Wallet extends Component {
 }
 
 export default connect(
-  ({ walletList }) => ({ walletList: walletList.data }),
+  (state, ownProps) => {
+    const { wallet } = state;
+    return {
+      walletList: Object.keys(wallet.data).map(
+        walletId => wallet.data[walletId]
+      )
+    };
+  },
   dispatch => ({
     getWalletListRequest: () => dispatch(requestWalletListAction())
   })
