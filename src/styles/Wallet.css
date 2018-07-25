@@ -29,8 +29,11 @@
 .Wallet-balance__text {
   font-weight: bold;
   color: #333;
-  line-height: 2;
-  border: 1px solid;
   padding: 0 10px;
+  line-height: 1.4;
+  border: 1px solid;
+  word-break: break-all;
+  display: block;
+  margin: 5px 0;
 }
 
