@@ -10,7 +10,10 @@ const PORT = 8000;
 const isProduction = process.env.NODE_ENV === "production";
 const API = "/api/v1";
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN || "";
-const bitgo = new BitGoJS.BitGo();
+const bitgo = new BitGoJS.BitGo({
+  env: "test",
+  accessToken: ACCESS_TOKEN
+});
 
 // cors
 app.use(cors());
