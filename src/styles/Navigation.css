@@ -3,3 +3,11 @@
   color: #f8f8f8;
   background-color: #444;
 }
+
+.Navigation-user {
+  text-align: right;
+}
+
+.Navigation-user button {
+  margin-left: 10px;
+}
