@@ -18,6 +18,15 @@ const walletList = (state = walletInitialState, action) => {
         ...state,
         data: { ...state.data, [walletId]: loadingWallet }
       };
+    case GET_WALLET[FAILURE]:
+      const walletData = { ...state.data[action.walletId] };
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [action.walletId]: { ...walletData, error: action.error }
+        }
+      };
     case GET_WALLET[SUCCESS]:
       const { response } = action;
       const oldWallet = state.data[action.walletId] || {};
@@ -25,7 +34,13 @@ const walletList = (state = walletInitialState, action) => {
         ...oldWallet,
         ...response.wallet
       };
-      const newWallet = { ...state.data, [action.walletId]: loadedWallet };
+      const newWallet = {
+        ...state.data,
+        [action.walletId]: {
+          ...loadedWallet,
+          error: null
+        }
+      };
 
       return {
         ...state,
