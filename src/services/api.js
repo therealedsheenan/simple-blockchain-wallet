@@ -7,20 +7,11 @@ const axiosInstance = axios.create({
   timeout: 10000
 });
 
+axiosInstance.defaults.headers.post["Content-Type"] = "application/json";
+
 const Api = (options = {}) => {
   return axiosInstance(options)
-    .then(response => {
-      // other successful response
-      return response.json().then(json => {
-        return { json, response };
-      });
-    })
-    .then(({ json, response }) => {
-      if (!response.ok) {
-        return Promise.reject(json);
-      }
-      return json;
-    })
+    .then(res => (res.status !== 200 ? Promise.reject(res) : res))
     .then(response => ({ response }), error => ({ error }));
 };
 
