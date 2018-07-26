@@ -1,86 +1,132 @@
 import React, { Component } from "react";
+import { Card, Layout, Tag, Notify } from "zent";
+
 import PropTypes from "prop-types";
-import { Menu } from "zent";
-import { Route, Link, BrowserRouter as Router } from "react-router-dom";
 import { connect } from "react-redux";
 
-import Navigation from "../components/Navigation";
+// components
+import Placeholder from "../components/Placeholder";
 
 // actions
-import { requestWalletListAction } from "../modules/wallet/actions";
+import { requestWalletAction } from "../modules/wallet/actions";
 
-// wallet sub pages
-import History from "./wallet/History";
-import WalletIndex from "./wallet/index";
+// selector
+import Navigation from "../components/Navigation";
 
-const { MenuItem, SubMenu } = Menu;
+const { Row, Col } = Layout;
 
 class Wallet extends Component {
+  static defaultProps = {
+    // loading: false
+  };
+
   static propTypes = {
-    match: PropTypes.object.isRequired, // eslint-disable-line,
-    getWalletListRequest: PropTypes.func.isRequired
+    getWalletRequest: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired, // eslint-disable-line
+    loading: PropTypes.bool,
+    wallet: PropTypes.object.isRequired // eslint-disable-line
   };
 
   componentWillMount() {
-    this.props.getWalletListRequest();
+    const { wallet, match } = this.props;
+
+    this.props.getWalletRequest(match.params.id);
   }
-  render() {
-    const { match, walletList } = this.props;
+
+  componentDidUpdate(prevProps) {
+    if (this.props.wallet.error) {
+      Notify.error(this.props.wallet.error);
+    }
+  }
+
+  triggerFailure = () => {
+    this.setState({ componentFailure: true });
+  };
+
+  renderWallet = () => {
+    const { wallet, match, loading } = this.props;
     return (
-      <Router>
+      !wallet.error && (
         <div className="Wallet">
           <Navigation />
-          <div className="Wallet-wrapper">
-            <Menu mode="inline" className="Wallet-menu">
-              <SubMenu title="Wallets">
-                {walletList.map(wallet => (
-                  <MenuItem key={wallet.id}>
-                    <Link
-                      className="Wallet-menu__link"
-                      to={`${match.url}/${wallet.id}`}
-                      href={`${match.url}/${wallet.id}`}
-                    >
-                      {wallet.label}
-                    </Link>
-                  </MenuItem>
-                ))}
-              </SubMenu>
-              <MenuItem key="history">
-                <Link
-                  className="Wallet-menu__link"
-                  to={`${match.url}/history`}
-                  href={`${match.url}/history`}
+          <div className="Wallet-content">
+            <Row>
+              <Col span={8}>
+                <Card
+                  title={
+                    <div>
+                      Wallet Name: {wallet.label}{" "}
+                      {wallet.isActive ? (
+                        <Tag color="green">Active</Tag>
+                      ) : (
+                        <Tag color="red">Inactive</Tag>
+                      )}
+                    </div>
+                  }
                 >
-                  Transaction History
-                </Link>
-              </MenuItem>
-            </Menu>
-            <div className="Wallet-content">
-              <Route
-                path={`${match.url}/:id`}
-                render={props => (
-                  <WalletIndex key={props.match.params.id} {...props} />
-                )}
-              />
-              <Route exact path={`${match.url}/history`} component={History} />
-            </div>
+                  <label className="Wallet-balance__label">
+                    Wallet ID:{" "}
+                    <span className="Wallet-balance__text"> {wallet.id}</span>
+                  </label>
+                  <label className="Wallet-balance__label">
+                    Balance:{" "}
+                    <span className="Wallet-balance__text">
+                      {" "}
+                      {wallet.balance}
+                    </span>
+                  </label>
+                  <label className="Wallet-balance__label">
+                    Sent:{" "}
+                    <span className="Wallet-balance__text"> {wallet.sent}</span>
+                  </label>
+                  <label className="Wallet-balance__label">
+                    Received:{" "}
+                    <span className="Wallet-balance__text">
+                      {" "}
+                      {wallet.received}
+                    </span>
+                  </label>
+                  <label className="Wallet-balance__label">
+                    Unconfirmed sends:{" "}
+                    <span className="Wallet-balance__text">
+                      {" "}
+                      {wallet.unconfirmedSends}
+                    </span>
+                  </label>
+                  <label className="Wallet-balance__label">
+                    Unconfirmed receives:{" "}
+                    <span className="Wallet-balance__text">
+                      {" "}
+                      {wallet.unconfirmedReceives}
+                    </span>
+                  </label>
+                </Card>
+              </Col>
+            </Row>
           </div>
         </div>
-      </Router>
+      )
     );
+  };
+
+  renderLoading = () => <Placeholder />;
+
+  render() {
+    return this.props.wallet.isLoading
+      ? this.renderLoading()
+      : this.renderWallet();
   }
 }
 
 export default connect(
   (state, ownProps) => {
     const { wallet } = state;
+    const { match } = ownProps;
     return {
-      walletList: Object.keys(wallet.data).map(
-        walletId => wallet.data[walletId]
-      )
+      wallet: wallet.data[match.params.id] || wallet.data
     };
   },
   dispatch => ({
-    getWalletListRequest: () => dispatch(requestWalletListAction())
+    getWalletRequest: walletId => dispatch(requestWalletAction(walletId))
   })
 )(Wallet);
