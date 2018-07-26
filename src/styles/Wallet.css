@@ -8,8 +8,6 @@
 
 .Wallet-content {
   overflow: hidden;
-  width: calc(100% - 180px);
-  margin-left: 180px;
   padding: 16px;
   box-sizing: border-box;
   position: relative;
