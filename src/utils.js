@@ -10,3 +10,5 @@ export const unsetToken = () => {
 
 export const getUser = () => JSON.parse(localStorage.getItem("bitgo-user"));
 export const getToken = () => localStorage.getItem("bitgo-token");
+
+export const isAuthenticated = () => !!getToken() && !!getUser();
