@@ -12,14 +12,14 @@ const walletList = (state = walletInitialState, action) => {
   switch (type) {
     case GET_WALLET[REQUEST]:
       const { walletId } = action;
-      const loadingWallet = { ...state.data[walletId] };
+      const loadingWallet = { ...state.data[walletId], isLoading: true };
 
       return {
         ...state,
         data: { ...state.data, [walletId]: loadingWallet }
       };
     case GET_WALLET[FAILURE]:
-      const walletData = { ...state.data[action.walletId] };
+      const walletData = { ...state.data[action.walletId], isLoading: false };
       return {
         ...state,
         data: {
@@ -32,7 +32,8 @@ const walletList = (state = walletInitialState, action) => {
       const oldWallet = state.data[action.walletId] || {};
       const loadedWallet = {
         ...oldWallet,
-        ...response.wallet
+        ...response.wallet,
+        isLoading: false
       };
       const newWallet = {
         ...state.data,
