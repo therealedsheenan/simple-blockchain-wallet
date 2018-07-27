@@ -1,21 +1,22 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Menu } from "zent";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { requestWalletListAction } from "../modules/wallet/actions";
-
-const { MenuItem } = Menu;
+import Placeholder from "./Placeholder";
+import loadingSelector from "../modules/loading/selector";
 
 export class WalletsMenu extends Component {
   static defaultProps = {
-    walletList: []
+    walletList: [],
+    loading: false
   };
 
   static propTypes = {
     getWalletListRequest: PropTypes.func.isRequired,
-    walletList: PropTypes.array // eslint-disable-line
+    walletList: PropTypes.array, // eslint-disable-line
+    loading: PropTypes.bool
   };
 
   componentWillMount() {
@@ -23,28 +24,42 @@ export class WalletsMenu extends Component {
   }
 
   render() {
-    const { walletList } = this.props;
+    const { walletList, loading } = this.props;
     return (
-      <Menu mode="inline" className="Wallet-menu">
-        {walletList.map(wallet => (
-          <MenuItem key={wallet.id}>
-            <Link className="Wallet-menu__link" to={`/wallets/${wallet.id}`}>
-              {wallet.label}
-            </Link>
-          </MenuItem>
-        ))}
-      </Menu>
+      <div className="Wallet-content">
+        <h1>Wallet list:</h1>
+        {loading ? (
+          <Placeholder />
+        ) : (
+          <div className="Wallet-list">
+            {walletList.map(wallet => (
+              <div className="Wallet-list--item" key={wallet.id}>
+                <Link
+                  className="Wallet-list__link"
+                  to={`/wallets/${wallet.id}`}
+                >
+                  {wallet.label}
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     );
   }
 }
 
+const walletListLoading = loadingSelector(["GET_WALLET_LIST"]);
+
 export default connect(
   state => {
     const { wallet } = state;
+    const mapWalletList = Object.keys(wallet.data).map(
+      walletId => wallet.data[walletId]
+    );
     return {
-      walletList: Object.keys(wallet.data).map(
-        walletId => wallet.data[walletId]
-      )
+      walletList: mapWalletList,
+      loading: walletListLoading(state)
     };
   },
   dispatch => ({

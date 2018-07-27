@@ -16,14 +16,9 @@ import Navigation from "../components/Navigation";
 const { Row, Col } = Layout;
 
 class Wallet extends Component {
-  static defaultProps = {
-    // loading: false
-  };
-
   static propTypes = {
     getWalletRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired, // eslint-disable-line
-    loading: PropTypes.bool,
     wallet: PropTypes.object.isRequired // eslint-disable-line
   };
 

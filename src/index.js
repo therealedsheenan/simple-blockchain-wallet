@@ -16,6 +16,7 @@ import "./styles/Login.css";
 import "./styles/Navigation.css";
 import "./styles/Wallet.css";
 import "./styles/Error-page.css";
+import "./styles/Notification.css";
 
 ReactDOM.render(
   <Provider store={store}>
