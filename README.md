@@ -20,3 +20,8 @@ For API documentation, checkout [BITGO SDK](https://bitgo.github.io/bitgo-docs/#
 
 ### Note
 Make sure to create an account at [BITGO](https://test.bitgo.com/info/signup) (test.bitgo) before running the app.
+
+### Access Token Limitaion
+Access tokens are used to maintain a session and are created via password login (requires OTP).
+Typical access tokens obtained via the web interface are locked to a single IP-address and are valid for 60 minutes, although developers may create long lasting tokens.
+With this, you can restart the node server. (`npm run server`)
