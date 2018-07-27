@@ -7,7 +7,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "server": "ACCESS_TOKEN=$BITGO1_ACCESS_TOKEN node server.js "
+    "server": "node server.js "
   },
   "dependencies": {
     "axios": "^0.18.0",
