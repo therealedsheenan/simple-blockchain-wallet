@@ -20,6 +20,7 @@ For API documentation, checkout [BITGO SDK](https://bitgo.github.io/bitgo-docs/#
 
 ### Note
 Make sure to create an account at [BITGO](https://test.bitgo.com/info/signup) (test.bitgo) before running the app.
+These repo is only geting *tbtc* bitcoin data. Wallet should also be new version of Bitgo wallet.
 
 ### Access Token limitation
 Access tokens are used to maintain a session and are created via password login (requires OTP).

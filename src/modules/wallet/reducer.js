@@ -58,10 +58,10 @@ const walletList = (state = walletInitialState, action) => {
         error: action.error
       };
     case GET_WALLET_LIST[SUCCESS]:
-      const walletsList = action.response.wallets.reduce(
+      const walletsList = action.response.wallets.wallets.reduce(
         (acc, wallet) => ({
           ...acc,
-          [wallet.id]: wallet
+          [wallet._wallet.id]: wallet._wallet
         }),
         {}
       );

@@ -61,6 +61,10 @@ class Wallet extends Component {
                     <span className="Wallet-balance__text"> {wallet.id}</span>
                   </label>
                   <label className="Wallet-balance__label">
+                    Coin:{" "}
+                    <span className="Wallet-balance__text"> {wallet.coin}</span>
+                  </label>
+                  <label className="Wallet-balance__label">
                     Balance:{" "}
                     <span className="Wallet-balance__text">
                       {" "}
@@ -68,28 +72,10 @@ class Wallet extends Component {
                     </span>
                   </label>
                   <label className="Wallet-balance__label">
-                    Sent:{" "}
-                    <span className="Wallet-balance__text"> {wallet.sent}</span>
-                  </label>
-                  <label className="Wallet-balance__label">
-                    Received:{" "}
+                    Spendable Balance:{" "}
                     <span className="Wallet-balance__text">
                       {" "}
-                      {wallet.received}
-                    </span>
-                  </label>
-                  <label className="Wallet-balance__label">
-                    Unconfirmed sends:{" "}
-                    <span className="Wallet-balance__text">
-                      {" "}
-                      {wallet.unconfirmedSends}
-                    </span>
-                  </label>
-                  <label className="Wallet-balance__label">
-                    Unconfirmed receives:{" "}
-                    <span className="Wallet-balance__text">
-                      {" "}
-                      {wallet.unconfirmedReceives}
+                      {wallet.spendableBalance}
                     </span>
                   </label>
                 </Card>

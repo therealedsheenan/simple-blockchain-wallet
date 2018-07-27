@@ -63,27 +63,30 @@ app.post(`${API}/wallet-info`, (req, res, next) => {
     return next("unable to fetch data.");
   }
 
-  bitgo.wallets().get({ type: "bitcoin", id: address }, (err, wallet) => {
-    if (err) {
-      return next(err);
-    }
-    return res.json({
-      wallet: wallet.wallet
-    });
-  });
+  bitgo
+    .coin("tbtc")
+    .wallets()
+    .get({ id: address })
+    .then(wallet => {
+      return res.json({
+        wallet: wallet._wallet
+      });
+    })
+    .catch(error => next(error));
 });
 
 // get wallet-list
 app.post(`${API}/wallet-list`, (req, res, next) => {
-  bitgo.wallets().list({}, (error, wallets) => {
-    if (error) {
-      return next(error);
-    }
-
-    return res.json({
-      wallets: wallets.wallets
-    });
-  });
+  bitgo
+    .coin("tbtc")
+    .wallets()
+    .list({})
+    .then(wallets => {
+      return res.json({
+        wallets: wallets
+      });
+    })
+    .catch(error => next(error));
 });
 
 // sending bitcoin
