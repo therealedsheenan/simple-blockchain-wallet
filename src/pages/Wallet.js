@@ -28,23 +28,19 @@ class Wallet extends Component {
   };
 
   componentWillMount() {
-    const { wallet, match } = this.props;
+    const { match } = this.props;
 
     this.props.getWalletRequest(match.params.id);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     if (this.props.wallet.error) {
       Notify.error(this.props.wallet.error);
     }
   }
 
-  triggerFailure = () => {
-    this.setState({ componentFailure: true });
-  };
-
   renderWallet = () => {
-    const { wallet, match, loading } = this.props;
+    const { wallet } = this.props;
     return (
       !wallet.error && (
         <div className="Wallet">
@@ -109,7 +105,13 @@ class Wallet extends Component {
     );
   };
 
-  renderLoading = () => <Placeholder />;
+  renderLoading = () => (
+    <div className="Wallet">
+      <div className="Wallet-content">
+        <Placeholder />
+      </div>
+    </div>
+  );
 
   render() {
     return this.props.wallet.isLoading
