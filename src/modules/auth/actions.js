@@ -60,5 +60,6 @@ export const postUnauthRequest = () => async dispatch => {
   if (response) {
     return dispatch(push("/"));
   }
+  dispatch(push("/"));
   return dispatch(auth.postUnauthFailure(error));
 };

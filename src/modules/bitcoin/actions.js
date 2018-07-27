@@ -5,7 +5,8 @@ import {
   createRequestTypes,
   REQUEST,
   FAILURE,
-  SUCCESS
+  SUCCESS,
+  RESET
 } from "../utils";
 
 export const POST_SEND_BITCOIN = createRequestTypes("POST_SEND_BITCOIN");
@@ -13,7 +14,9 @@ export const POST_SEND_BITCOIN = createRequestTypes("POST_SEND_BITCOIN");
 export const bitcoin = {
   postSendBitcoinRequest: () => createAction(POST_SEND_BITCOIN[REQUEST]),
   postSendBitcoinFailure: () => createAction(POST_SEND_BITCOIN[FAILURE]),
-  postSendBitcoinSuccess: () => createAction(POST_SEND_BITCOIN[SUCCESS])
+  postSendBitcoinSuccess: () => createAction(POST_SEND_BITCOIN[SUCCESS]),
+
+  resetSendBitcoinNotification: () => createAction(POST_SEND_BITCOIN[RESET])
 };
 
 export const postSendBitcoinRequest = (
@@ -33,7 +36,8 @@ export const postSendBitcoinRequest = (
       amount
     }
   });
-  return response
-    ? dispatch(bitcoin.postSendBitcoinSuccess(response.data))
-    : dispatch(bitcoin.postSendBitcoinFailure(error));
+  if (response) {
+    return dispatch(bitcoin.postSendBitcoinSuccess(response.data));
+  }
+  return dispatch(bitcoin.postSendBitcoinFailure(error));
 };

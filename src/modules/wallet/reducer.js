@@ -49,7 +49,8 @@ const walletList = (state = walletInitialState, action) => {
       };
     case GET_WALLET_LIST[REQUEST]:
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     case GET_WALLET_LIST[FAILURE]:
       return {
