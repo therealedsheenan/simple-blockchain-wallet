@@ -27,6 +27,9 @@ export const wallet = {
     createAction(GET_WALLET_LIST[SUCCESS], { response })
 };
 
+/*
+* Only get the index list of wallets and not all of the info of each wallet,
+*/
 export const requestWalletListAction = () => async dispatch => {
   dispatch(wallet.getWalletListRequest());
   const { response, error } = await Api({
@@ -38,6 +41,10 @@ export const requestWalletListAction = () => async dispatch => {
     : dispatch(wallet.getWalletListFailure(error));
 };
 
+/*
+* Get specific wallet information,
+* requires walletId as params
+*/
 export const requestWalletAction = walletId => async dispatch => {
   dispatch(wallet.getWalletRequest(walletId));
   const { response } = await Api({

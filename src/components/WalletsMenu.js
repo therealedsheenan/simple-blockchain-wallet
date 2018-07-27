@@ -7,6 +7,7 @@ import { requestWalletListAction } from "../modules/wallet/actions";
 import Placeholder from "./Placeholder";
 import loadingSelector from "../modules/loading/selector";
 
+// show list of wallets of the authenticated user
 export class WalletsMenu extends Component {
   static defaultProps = {
     walletList: [],

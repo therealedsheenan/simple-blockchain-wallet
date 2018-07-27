@@ -27,6 +27,11 @@ export const auth = {
   postUnauthSuccess: () => createAction(POST_UNAUTH[SUCCESS])
 };
 
+/*
+* Login or authenticate action
+* setting of token and user info to localstorage
+* after successful login, user is redirected to the /wallets page
+*/
 export const postAuthRequest = (username, password) => async dispatch => {
   if (!username || !password) {
     dispatch(auth.postAuthFailure("Login error."));
@@ -49,6 +54,9 @@ export const postAuthRequest = (username, password) => async dispatch => {
   return dispatch(auth.postAuthFailure("Invalid credentials."));
 };
 
+/* logout action
+* upon logout, remove local storage token and redirect to home page
+*/
 export const postUnauthRequest = () => async dispatch => {
   dispatch(auth.postUnauthRequest());
   unsetToken();

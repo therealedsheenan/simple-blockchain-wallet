@@ -6,6 +6,7 @@ export const bitcoinInitialState = {
   error: null,
   isLoading: false,
   notification: {
+    // notify user if the transaction is successful or not
     success: false,
     failure: false
   }

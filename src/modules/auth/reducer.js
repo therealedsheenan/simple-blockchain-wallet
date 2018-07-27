@@ -29,7 +29,7 @@ const auth = (state = authInitialState, action) => {
           isAuthenticated: !!action.response,
           profile: {
             ...state.data.profile,
-            ...action.response.user.user
+            ...action.response.user.user // user profile data from bitgo api
           }
         }
       };

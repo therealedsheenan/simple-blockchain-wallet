@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 
 import { isAuthenticated } from "../utils";
 
+// utility component for filtering unauthenticated users
+// redirect users to home page if they're unauthenticated
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}

@@ -9,6 +9,7 @@ import { postUnauthRequest } from "../modules/auth/actions";
 
 const { Row, Col } = Layout;
 
+// navigation menu
 class Navigation extends Component {
   static propTypes = {
     postUnauthRequest: PropTypes.func.isRequired // eslint-disable-line

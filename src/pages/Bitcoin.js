@@ -10,10 +10,12 @@ import { requestWalletListAction } from "../modules/wallet/actions";
 const { FormInputField, createForm, FormSelectField } = Form;
 const { Row, Col } = Layout;
 
+// a page for sending bitcoin to other wallets
 class Bitcoin extends React.PureComponent {
   static defaultProps = {
     walletList: []
   };
+
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     postSendBitcoinRequest: PropTypes.func.isRequired,
@@ -34,6 +36,7 @@ class Bitcoin extends React.PureComponent {
   };
 
   componentWillMount() {
+    // resetting notifications
     this.props.resetNotification();
     this.props.getWalletListRequest();
   }

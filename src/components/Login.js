@@ -7,6 +7,7 @@ import { postAuthRequest } from "../modules/auth/actions";
 const { FormInputField, createForm } = Form;
 const { Row, Col } = Layout;
 
+// login form
 class Login extends PureComponent {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,

@@ -9,6 +9,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.defaults.headers.post["Content-Type"] = "application/json";
 
+// a utility function for calling the node api using axios
 const Api = (options = {}) => {
   return axiosInstance(options)
     .then(res => (res.status !== 200 ? Promise.reject(res) : res))

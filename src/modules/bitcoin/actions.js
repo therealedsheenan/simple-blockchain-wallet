@@ -19,6 +19,10 @@ export const bitcoin = {
   resetSendBitcoinNotification: () => createAction(POST_SEND_BITCOIN[RESET])
 };
 
+/*
+* Sending bitcoin to other wallet,
+* walletId, walletPass, destionation and amount should be passed as arguments
+*/
 export const postSendBitcoinRequest = (
   walletId,
   walletPass,
