@@ -44,20 +44,20 @@ export const postAuthRequest = (username, password) => async dispatch => {
       response.data.user.access_token,
       JSON.stringify(response.data.user.user)
     );
-    return dispatch(push("/wallet"));
+    return dispatch(push("/wallets"));
   }
   return dispatch(auth.postAuthFailure("Invalid credentials."));
 };
 
 export const postUnauthRequest = () => async dispatch => {
   dispatch(auth.postUnauthRequest());
+  unsetToken();
+  dispatch(auth.postUnauthSuccess());
   const { response, error } = await Api({
     method: "post",
     url: "logout"
   });
   if (response) {
-    unsetToken();
-    dispatch(auth.postUnauthSuccess());
     return dispatch(push("/"));
   }
   return dispatch(auth.postUnauthFailure(error));

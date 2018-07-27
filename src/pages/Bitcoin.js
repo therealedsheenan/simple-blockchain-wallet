@@ -5,13 +5,19 @@ import PropTypes from "prop-types";
 
 import Navigation from "../components/Navigation";
 import { postSendBitcoinRequest } from "../modules/bitcoin/actions";
+import { requestWalletListAction } from "../modules/wallet/actions";
 
-const { FormInputField, createForm } = Form;
+const { FormInputField, createForm, FormSelectField } = Form;
 
 class Bitcoin extends React.Component {
+  static defaultProps = {
+    walletList: []
+  };
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
-    postSendBitcoinRequest: PropTypes.func.isRequired
+    postSendBitcoinRequest: PropTypes.func.isRequired,
+    getWalletListRequest: PropTypes.func.isRequired,
+    walletList: PropTypes.array // eslint-disable-line
   };
 
   handleFormSubmit = values => {
@@ -24,7 +30,12 @@ class Bitcoin extends React.Component {
     );
   };
 
+  componentWillMount() {
+    this.props.getWalletListRequest();
+  }
+
   render() {
+    const { walletList } = this.props;
     return (
       <div className="Wallet">
         <Navigation />
@@ -33,14 +44,13 @@ class Bitcoin extends React.Component {
             horizontal
             onSubmit={this.props.handleSubmit(this.handleFormSubmit)}
           >
-            <FormInputField
+            <FormSelectField
               name="walletId"
-              type="text"
               label="Wallet ID: "
+              data={walletList}
               required
-              spellCheck={false}
               validations={{ required: true }}
-              validationErrors={{ required: "Please enter the value" }}
+              validationErrors={{ required: "Please choose the wallet ID." }}
             />
             <FormInputField
               name="passphrase"
@@ -93,9 +103,25 @@ class Bitcoin extends React.Component {
 }
 
 export default connect(
-  () => {},
-  dispath => ({
+  state => {
+    const { wallet } = state;
+    return {
+      walletList: Object.keys(wallet.data)
+        .map(walletId => wallet.data[walletId])
+        .map(wal => {
+          return {
+            ...wal,
+            value: wal.id,
+            text: wal.label
+          };
+        }, [])
+    };
+  },
+  dispatch => ({
+    getWalletListRequest: () => dispatch(requestWalletListAction()),
     postSendBitcoinRequest: (walletId, walletPass, destination, amount) =>
-      dispath(postSendBitcoinRequest(walletId, walletPass, destination, amount))
+      dispatch(
+        postSendBitcoinRequest(walletId, walletPass, destination, amount)
+      )
   })
 )(createForm()(Bitcoin));
