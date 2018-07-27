@@ -1,10 +1,10 @@
-import { Form, Radio, Notify, Button, Layout } from "zent";
+import { Form, Notify, Button, Layout } from "zent";
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { postAuthRequest } from "../modules/auth/actions";
 
-const { Field, FormInputField, createForm } = Form;
+const { FormInputField, createForm } = Form;
 const { Row, Col } = Layout;
 
 class Login extends PureComponent {
@@ -30,7 +30,7 @@ class Login extends PureComponent {
   }
 
   render() {
-    const { handleSubmit, auth } = this.props;
+    const { handleSubmit } = this.props;
     return (
       <Row>
         <Col span={8} offset={8}>

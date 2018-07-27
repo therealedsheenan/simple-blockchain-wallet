@@ -40,7 +40,7 @@ export const requestWalletListAction = () => async dispatch => {
 
 export const requestWalletAction = walletId => async dispatch => {
   dispatch(wallet.getWalletRequest(walletId));
-  const { response, error } = await Api({
+  const { response } = await Api({
     method: "post",
     url: "/wallet-info",
     data: {
