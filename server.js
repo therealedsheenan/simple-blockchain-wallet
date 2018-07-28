@@ -97,36 +97,28 @@ app.post(`${API}/send`, (req, res, next) => {
   }
 
   bitgo
-    .unlock({ otp: "0000000" })
-    .then(unlockResponse => {
-      bitgo.wallets().get({ id: walletId }, (err, wallet) => {
-        if (err) {
-          return next(err);
-        }
-
-        const walletBalance = (wallet.balance() / 1e8).toFixed(4);
-
-        wallet.sendCoins(
-          {
-            address: destination,
-            amount,
-            walletPassphrase: walletPass, // sender pass phrase
-            minConfirms: 0
-          },
-          (err, result) => {
-            if (err) {
-              return next(err);
-            }
-
-            return res.json({
-              ...result,
-              balance: walletBalance
-            });
-          }
-        );
-      });
+    .coin("tbtc")
+    .wallets()
+    .get({ id: walletId })
+    .then(wallet => {
+      // unlock bitgo session first to send
+      unlockBitcoin();
+      return wallet
+        .send({ amount, address: destination, walletPassphrase: walletPass })
+        .then(transaction => {
+          // print transaction details
+          console.dir(transaction);
+          return res.json({
+            transaction
+          });
+        })
+        .catch(error => next(error));
     })
-    .catch(error => next(error));
+    .catch(error => {
+      console.log(error);
+      console.log("error here");
+      return next(error);
+    });
 });
 
 // login
@@ -198,5 +190,17 @@ app.use((err, req, res, next) => {
     }
   });
 });
+
+// utility
+const unlockBitcoin = () => {
+  return bitgo
+    .unlock({ otp: "0000000" })
+    .then(unlockResponse => {
+      console.log(unlockResponse);
+    })
+    .catch(error => {
+      return next(error);
+    });
+};
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`));
