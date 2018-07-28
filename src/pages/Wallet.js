@@ -44,18 +44,7 @@ class Wallet extends Component {
           <div className="Wallet-content">
             <Row>
               <Col span={8}>
-                <Card
-                  title={
-                    <div>
-                      Wallet Name: {wallet.label}{" "}
-                      {wallet.isActive ? (
-                        <Tag color="green">Active</Tag>
-                      ) : (
-                        <Tag color="red">Inactive</Tag>
-                      )}
-                    </div>
-                  }
-                >
+                <Card title={<div>Wallet Name: {wallet.label}</div>}>
                   <label className="Wallet-balance__label">
                     Wallet ID:{" "}
                     <span className="Wallet-balance__text"> {wallet.id}</span>
