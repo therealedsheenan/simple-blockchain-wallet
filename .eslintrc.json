@@ -17,6 +17,7 @@
   },
   "extends": ["airbnb", "plugin:react/recommended", "plugin:prettier/recommended"],
   "rules": {
+      "no-underscore-dangle": "off",
       "no-case-declarations": "off",
       "import/no-named-as-default": "off",
       "import/no-named-as-default-member": "off",
