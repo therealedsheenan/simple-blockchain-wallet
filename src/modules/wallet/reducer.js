@@ -55,7 +55,8 @@ const walletList = (state = walletInitialState, action) => {
     case GET_WALLET_LIST[FAILURE]:
       return {
         ...state,
-        error: action.error
+        error: action.error,
+        isLoading: false
       };
     case GET_WALLET_LIST[SUCCESS]:
       const walletsList = action.response.wallets.wallets.reduce(

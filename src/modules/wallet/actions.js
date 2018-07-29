@@ -17,7 +17,7 @@ export const wallet = {
   getWalletFailure: (walletId, error) =>
     createAction(GET_WALLET[FAILURE], { walletId, error }),
   getWalletSuccess: (walletId, response) =>
-    createAction(GET_WALLET[SUCCESS], { response, walletId }),
+    createAction(GET_WALLET[SUCCESS], { walletId, response }),
 
   // wallet list
   getWalletListRequest: () => createAction(GET_WALLET_LIST[REQUEST]),
