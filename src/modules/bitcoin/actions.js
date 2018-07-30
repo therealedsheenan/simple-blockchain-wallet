@@ -13,8 +13,10 @@ export const POST_SEND_BITCOIN = createRequestTypes("POST_SEND_BITCOIN");
 
 export const bitcoin = {
   postSendBitcoinRequest: () => createAction(POST_SEND_BITCOIN[REQUEST]),
-  postSendBitcoinFailure: () => createAction(POST_SEND_BITCOIN[FAILURE]),
-  postSendBitcoinSuccess: () => createAction(POST_SEND_BITCOIN[SUCCESS]),
+  postSendBitcoinFailure: error =>
+    createAction(POST_SEND_BITCOIN[FAILURE], { error }),
+  postSendBitcoinSuccess: response =>
+    createAction(POST_SEND_BITCOIN[SUCCESS], { response }),
 
   resetSendBitcoinNotification: () => createAction(POST_SEND_BITCOIN[RESET])
 };

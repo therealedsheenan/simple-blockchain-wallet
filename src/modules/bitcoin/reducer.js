@@ -2,7 +2,7 @@ import { REQUEST, FAILURE, SUCCESS, RESET } from "../utils";
 import { POST_SEND_BITCOIN } from "./actions";
 
 export const bitcoinInitialState = {
-  date: {},
+  data: {},
   error: null,
   isLoading: false,
   notification: {
