@@ -34,10 +34,10 @@ export const auth = {
 */
 export const postAuthRequest = (username, password) => async dispatch => {
   if (!username || !password) {
-    dispatch(auth.postAuthFailure("Login error."));
+    return dispatch(auth.postAuthFailure("Login error."));
   }
   dispatch(auth.postAuthRequest(username, password));
-  const { response } = await Api({
+  const { error, response } = await Api({
     method: "post",
     url: "/login",
     data: { username, password }
