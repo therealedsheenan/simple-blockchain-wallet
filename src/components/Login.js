@@ -8,7 +8,7 @@ const { FormInputField, createForm } = Form;
 const { Row, Col } = Layout;
 
 // login form
-class Login extends PureComponent {
+export class Login extends PureComponent {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     postAuthRequest: PropTypes.func.isRequired,
