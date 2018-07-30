@@ -8,7 +8,6 @@ import { axiosInstance } from "../../../services/api";
 // actions
 import {
   GET_WALLET,
-  wallet,
   GET_WALLET_LIST,
   requestWalletListAction,
   requestWalletAction
@@ -20,6 +19,7 @@ import {
   walletId,
   GET_WALLET_FAILURE_ERROR
 } from "../../../__mocks__/wallet";
+import { userData } from "../../../__mocks__/user";
 
 // setup
 const middlewares = [thunk];
