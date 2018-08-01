@@ -37,7 +37,7 @@ export const postAuthRequest = (username, password) => async dispatch => {
     return dispatch(auth.postAuthFailure("Login error."));
   }
   dispatch(auth.postAuthRequest(username, password));
-  const { error, response } = await Api({
+  const { response } = await Api({
     method: "post",
     url: "/login",
     data: { username, password }
