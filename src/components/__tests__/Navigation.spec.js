@@ -1,25 +1,32 @@
 import React from "react";
-import { Form } from "zent";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import toJson from "enzyme-to-json";
-import sinon from "sinon";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 
 import { Navigation } from "../Navigation";
+import mockLocalStorage from "../../__mocks__/localStorage";
 
 describe("Login component", () => {
-  it("should test suite", () => {
-    expect(true).toEqual(true);
+  beforeEach(() => {
+    mockLocalStorage();
   });
-  // const mockPostUnauthRequest = jest.fn();
-  // const NavigationMock = () => (
-  //   <Navigation postUnauthRequest={mockPostUnauthRequest} />
-  // );
-  //
-  // it("Should match snapshot", () => {
-  //   const component = mount(<NavigationMock />);
-  //
-  //   expect(toJson(component)).toMatchSnapshot();
-  // });
+
+  const mockPostUnauthRequest = jest.fn();
+  const NavigationMock = (
+    <BrowserRouter>
+      <Switch>
+        <Route>
+          <Navigation postUnauthRequest={mockPostUnauthRequest} />
+        </Route>
+      </Switch>
+    </BrowserRouter>
+  );
+
+  it("Should match snapshot", () => {
+    const component = mount(NavigationMock);
+
+    expect(toJson(component)).toMatchSnapshot();
+  });
   // username and password
   // it("Should contain username and password input", () => {
   //   const component = mount(<NavigationMock />);
