@@ -2,6 +2,7 @@ import React from "react";
 import { Form } from "zent";
 import { mount, shallow } from "enzyme";
 import toJson from "enzyme-to-json";
+import sinon from "sinon";
 
 import { Login } from "../Login";
 
@@ -24,4 +25,19 @@ describe("Login component", () => {
 
     expect(toJson(component)).toMatchSnapshot();
   });
+
+  // username and password
+  it("Should contain username and password input", () => {
+    const component = mount(<LoginForm />);
+    expect(component.text()).toContain("Username");
+    expect(component.text()).toContain("Password");
+  });
+
+  /* componentDidUpdate loads up notification
+  * Notification for successful and failure of login attempt
+  */
+  // it("should call componentDidUpdate function", () => {
+  //   sinon.spy(Login.prototype, "componentDidUpdate");
+  //   expect(Login.prototype.componentDidUpdate.calledOnce).toBeTruthy();
+  // });
 });
