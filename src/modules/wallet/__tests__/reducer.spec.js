@@ -50,7 +50,8 @@ describe("wallet reducer", () => {
       error: null,
       data: {
         [walletData[0]._wallet.id]: {
-          id: walletData[0]._wallet.id
+          id: walletData[0]._wallet.id,
+          label: walletData[0]._wallet.label
         }
       }
     });
