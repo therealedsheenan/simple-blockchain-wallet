@@ -33,7 +33,7 @@ describe("Login component", () => {
         label: "label2"
       }
     ];
-    const MockWalletsMenu = () => (
+    const WalletMenuWithRouter = () => (
       <Router>
         <WalletsMenu
           getWalletListRequest={mockGetWalletListRequest}
@@ -42,7 +42,7 @@ describe("Login component", () => {
         />
       </Router>
     );
-    const component = mount(<MockWalletsMenu />);
+    const component = mount(<WalletMenuWithRouter />);
     expect(component.text()).toContain(mockWalletListData[0].label);
     expect(component.text()).toContain(mockWalletListData[1].label);
   });
