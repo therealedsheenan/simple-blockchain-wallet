@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Layout, Tag, Notify } from "zent";
+import { Card, Layout, Notify } from "zent";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
