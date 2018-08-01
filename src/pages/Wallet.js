@@ -16,7 +16,7 @@ import Navigation from "../components/Navigation";
 const { Row, Col } = Layout;
 
 // Specific wallet page
-class Wallet extends Component {
+export class Wallet extends Component {
   static propTypes = {
     getWalletRequest: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired, // eslint-disable-line
