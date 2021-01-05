@@ -10,7 +10,7 @@
     "server": "node server.js "
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bitgo": "^4.32.0",
     "connected-react-router": "^4.3.0",
     "cors": "^2.8.4",
