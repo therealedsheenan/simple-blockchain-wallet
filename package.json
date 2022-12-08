@@ -14,7 +14,7 @@
     "bitgo": "^4.32.0",
     "connected-react-router": "^4.3.0",
     "cors": "^2.8.4",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "formik": "^1.0.1",
     "history": "^4.7.2",
     "prop-types": "^15.6.2",
